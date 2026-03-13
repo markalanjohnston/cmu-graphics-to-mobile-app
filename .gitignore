@@ -424,6 +424,9 @@ FodyWeavers.xsd
 # macOS system files
 .DS_Store
 
+# Large video files (full-resolution source, too large for GitHub)
+overview_video.mov
+
 # Internal planning docs
 TODO.md
 

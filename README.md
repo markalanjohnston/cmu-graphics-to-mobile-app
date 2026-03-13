@@ -126,3 +126,9 @@ The [GitHub Pages site](https://markalanjohnston.github.io/cmu-graphics-to-mobil
 ## License
 
 This lesson may be reused or modified for educational purposes.
+
+---
+
+## Contact
+
+Questions or feedback? Email [mark@mjstem.com](mailto:mark@mjstem.com)
