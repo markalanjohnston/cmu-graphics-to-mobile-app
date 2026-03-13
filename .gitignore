@@ -416,3 +416,32 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# =============================================================================
+# Project-specific exclusions — not for public repo
+# =============================================================================
+
+# macOS system files
+.DS_Store
+
+# Internal planning docs
+TODO.md
+
+# Workshop reference materials (large PDF, not lesson content)
+Computing Skills for Today*.pdf
+Computing Skills for Today*.txt
+
+# React Native iteration history (development scratch files, root level)
+MickeyScreen (1).jsx
+MickeyScreen (2).jsx
+MickeyScreen (3).jsx
+MickeyScreen (4).jsx
+MickeyScreen (5).jsx
+MickeyScreen (6).jsx
+MickeyScreen (7).jsx
+MickeyScreen (8).jsx
+MickeyScreen (9).jsx
+MickeyScreen (10).jsx
+MickeyScreen (11).jsx
+MickeyScreen.jsx
+MickeyScreen_final.jsx
