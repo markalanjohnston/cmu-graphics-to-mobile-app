@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMU Graphics → Mobile App | CS Lesson</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:      #1a1208;
+      --body:     #3b2f1e;
+      --muted:    #7a6650;
+      --rule:     #e0d6c8;
+      --bg:       #faf8f4;
+      --card:     #ffffff;
+      --accent:   #b85c1a;
+      --lt:       #fdf0e6;
+      --green-bg: #e8f0e8;
+      --green-fg: #2a5c2a;
+      --max:      740px;
+      --font:     Georgia, 'Times New Roman', serif;
+      --sans:     -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --mono:     'Menlo', 'Consolas', 'Courier New', monospace;
+    }
+
+    html { font-size: 18px; }
+    body { font-family: var(--font); background: var(--bg); color: var(--body); line-height: 1.75; }
+
+    /* ── Hero ─────────────────────────────────────────────── */
+    .hero {
+      background: var(--ink);
+      color: #f5ede0;
+      padding: 4rem 1.5rem 3.5rem;
+      text-align: center;
+    }
+    .hero .eyebrow {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #c8a87a;
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 6vw, 2.8rem);
+      font-weight: normal;
+      line-height: 1.2;
+      max-width: 600px;
+      margin: 0 auto 1.1rem;
+    }
+    .hero h1 em { font-style: normal; color: #c8a87a; }
+    .hero .subtitle {
+      font-size: 1rem;
+      color: #c0b5a5;
+      max-width: 520px;
+      margin: 0 auto 2rem;
+      line-height: 1.65;
+    }
+
+    /* ── CTA button ───────────────────────────────────────── */
+    .btn {
+      display: inline-block;
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      padding: 0.8rem 2rem;
+      border-radius: 6px;
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.88; text-decoration: none; }
+    .btn-primary { background: #c8a87a; color: var(--ink); }
+    .btn-outline {
+      background: transparent;
+      color: #f5ede0;
+      border: 2px solid rgba(255,255,255,0.3);
+      margin-left: 0.75rem;
+    }
+    .hero-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ── Tool chain ───────────────────────────────────────── */
+    .chain-bar {
+      background: #262010;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .chain-bar .step {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #f5ede0;
+      background: rgba(255,255,255,0.1);
+      padding: 0.3em 0.85em;
+      border-radius: 4px;
+    }
+    .chain-bar .step span { display: block; font-size: 0.6rem; color: #c8a87a; font-weight: 400; margin-top: 0.1em; }
+    .chain-bar .arr { color: #7a6650; font-size: 1.1rem; font-family: var(--sans); }
+
+    /* ── Main content ─────────────────────────────────────── */
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; }
+    main { padding: 3rem 0 4rem; }
+    section { margin-bottom: 3rem; }
+
+    h2 {
+      font-size: 1.3rem;
+      font-weight: normal;
+      color: var(--ink);
+      border-bottom: 2px solid var(--rule);
+      padding-bottom: 0.35rem;
+      margin-bottom: 1rem;
+    }
+    p { margin-bottom: 1rem; }
+    a { color: var(--accent); }
+    a:hover { text-decoration: underline; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+    li { margin-bottom: 0.3rem; }
+    strong { color: var(--ink); }
+
+    /* ── Concept table ────────────────────────────────────── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-size: 0.88rem;
+    }
+    thead tr { background: var(--ink); color: #f5ede0; }
+    th {
+      text-align: left;
+      padding: 0.6rem 0.85rem;
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+    td {
+      padding: 0.5rem 0.85rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    tr:nth-child(even) td { background: #f7f3ee; }
+    code {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      background: #f0ece6;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+
+    /* ── Phases ───────────────────────────────────────────── */
+    .phases { display: flex; flex-direction: column; }
+    .phase {
+      display: flex;
+      gap: 1rem;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .phase:last-child { border-bottom: none; }
+    .phase-num {
+      flex-shrink: 0;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: var(--ink);
+      color: #f5ede0;
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.15rem;
+    }
+    .phase-content h3 { font-size: 0.95rem; color: var(--ink); margin-bottom: 0.25rem; }
+    .phase-content p { margin: 0; font-size: 0.9rem; }
+
+    /* ── Callout ──────────────────────────────────────────── */
+    .callout {
+      border-left: 4px solid var(--accent);
+      background: var(--lt);
+      padding: 0.85rem 1.1rem;
+      border-radius: 0 6px 6px 0;
+      margin: 1.25rem 0;
+      font-size: 0.92rem;
+    }
+    .callout p:last-child { margin: 0; }
+    .callout-label {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+
+    /* ── Full lesson CTA banner ───────────────────────────── */
+    .lesson-cta {
+      background: var(--ink);
+      color: #f5ede0;
+      border-radius: 10px;
+      padding: 2rem 2rem;
+      text-align: center;
+      margin: 2.5rem 0;
+    }
+    .lesson-cta h2 {
+      border: none;
+      color: #f5ede0;
+      font-size: 1.3rem;
+      margin-bottom: 0.6rem;
+      padding: 0;
+    }
+    .lesson-cta p { color: #c0b5a5; font-size: 0.95rem; margin-bottom: 1.25rem; }
+
+    /* ── File list ────────────────────────────────────────── */
+    .file-list { list-style: none; padding: 0; }
+    .file-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.9rem;
+    }
+    .file-list li:last-child { border-bottom: none; }
+    .file-list code { flex-shrink: 0; }
+    .file-list .desc { color: var(--muted); font-size: 0.85rem; }
+
+    /* ── Footer ───────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: #7a6650;
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      text-align: center;
+      padding: 1.75rem 1.5rem;
+      line-height: 1.7;
+    }
+    footer a { color: #c8a87a; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 480px) {
+      .btn-outline { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="eyebrow">Computer Science Lesson &nbsp;·&nbsp; Fundamentals of CS</div>
+  <h1>Refactoring a Python Graphics Project into a <em>Mobile App</em></h1>
+  <p class="subtitle">
+    Students translate a CMU CS Academy Python project into a working React Native
+    mobile app — with help from AI. A hands-on lesson in concept transfer, debugging,
+    and cross-platform thinking.
+  </p>
+  <div class="hero-btns">
+    <a href="docs/" class="btn btn-primary">View the Full Lesson</a>
+    <a href="https://github.com/markalanjohnston/cmu-graphics-to-mobile-app" target="_blank" class="btn btn-outline">GitHub Repo</a>
+  </div>
+</header>
+
+<!-- Tool chain bar -->
+<div class="chain-bar">
+  <div class="step">CMU CS Academy <span>Write original Python project</span></div>
+  <span class="arr">→</span>
+  <div class="step">Claude.ai <span>Refactor to React Native</span></div>
+  <span class="arr">→</span>
+  <div class="step">CodeHS Sandbox <span>Run on device via Expo Go</span></div>
+</div>
+
+<!-- Body -->
+<main>
+<div class="wrap">
+
+  <!-- Overview -->
+  <section>
+    <h2>Overview</h2>
+    <p>
+      Students take an existing interactive program built in Python using the
+      <a href="https://academy.cs.cmu.edu/" target="_blank">CMU CS Academy</a>
+      graphics library and refactor it into a mobile application using
+      <a href="https://codehs.com/" target="_blank">CodeHS React Native</a>.
+    </p>
+    <p>
+      The goal is not to memorize new syntax — it is to recognize that
+      <strong>the same programming concepts exist across every language and
+      platform.</strong> Events, state, conditionals, and drawing logic all
+      transfer. Only the framework changes.
+    </p>
+    <div class="callout">
+      <div class="callout-label">Live demo</div>
+      <p>
+        The finished app is publicly viewable at
+        <a href="https://codehs.com/sandbox/id/mickeyscreen-AtogQW" target="_blank">
+          codehs.com/sandbox/id/mickeyscreen-AtogQW
+        </a>.
+        Open in the Expo Go app on a tablet or phone to run it on a real device.
+      </p>
+    </div>
+  </section>
+
+  <!-- Why it works -->
+  <section>
+    <h2>Why This Activity Works</h2>
+    <p>
+      By refactoring an <em>existing</em> project, students focus on understanding
+      logic rather than inventing an idea from scratch. Every CMU Graphics concept
+      has a direct React Native equivalent:
+    </p>
+    <table>
+      <thead>
+        <tr><th>CMU Graphics</th><th>React Native</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>onMousePress</code></td><td>Touch event (<code>onPress</code>)</td></tr>
+        <tr><td>Shape position</td><td>Component position</td></tr>
+        <tr><td>State variables</td><td><code>this.state</code></td></tr>
+        <tr><td><code>shape.clear()</code></td><td><code>this.setState({ part: false })</code></td></tr>
+        <tr><td>Drawing order</td><td>Component render order</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Classroom implementation -->
+  <section>
+    <h2>Classroom Implementation</h2>
+    <p><strong>Course:</strong> Fundamentals of Computer Science &nbsp;&nbsp; <strong>Grade:</strong> 9–10</p>
+    <div class="phases">
+      <div class="phase">
+        <div class="phase-num">1</div>
+        <div class="phase-content">
+          <h3>Explore the Original Program</h3>
+          <p>Students analyze the CMU Graphics project and identify variables, events, state, and drawing logic.</p>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-num">2</div>
+        <div class="phase-content">
+          <h3>Plan the Mobile Version</h3>
+          <p>Students sketch a mobile layout and decide how touch replaces mouse interaction.</p>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-num">3</div>
+        <div class="phase-content">
+          <h3>Refactor with AI</h3>
+          <p>Students paste their Python code into Claude.ai, then debug the output iteratively in CodeHS.</p>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-num">4</div>
+        <div class="phase-content">
+          <h3>Reflect</h3>
+          <p>Students discuss what transferred, what the AI got wrong, and what decisions required human judgment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Full lesson CTA -->
+  <div class="lesson-cta">
+    <h2>Full Lesson Documentation</h2>
+    <p>
+      The complete teacher guide includes concept mapping tables, a full AI debugging
+      log with six error rounds, classroom screenshots, and all example code.
+    </p>
+    <a href="docs/" class="btn btn-primary">Open the Full Lesson</a>
+  </div>
+
+  <!-- Learning objectives -->
+  <section>
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Recognize how programming concepts translate across languages and platforms</li>
+      <li>Practice debugging and iterative development in a real environment</li>
+      <li>Build and run a basic mobile application</li>
+      <li>Collaborate effectively with an AI coding assistant</li>
+      <li>Communicate technical problems clearly and precisely</li>
+      <li>Reflect on how design decisions change across platforms</li>
+    </ul>
+  </section>
+
+  <!-- Files -->
+  <section>
+    <h2>Repository Files</h2>
+    <ul class="file-list">
+      <li>
+        <code>examples/cmu-starter.py</code>
+        <span class="desc">CMU Graphics Python starter — solution code redacted</span>
+      </li>
+      <li>
+        <code>examples/react-native-example.jsx</code>
+        <span class="desc">Finished React Native app — fully commented</span>
+      </li>
+      <li>
+        <code>lesson/ai-refactoring-process.md</code>
+        <span class="desc">Full AI collaboration log — all six error rounds documented</span>
+      </li>
+      <li>
+        <code>docs/index.html</code>
+        <span class="desc">Full teacher lesson site (this repo's GitHub Pages)</span>
+      </li>
+    </ul>
+  </section>
+
+</div>
+</main>
+
+<footer>
+  <p>
+    Created as part of the <em>Computing Skills for Today's Middle School and High School Classrooms Workshop</em>.
+  </p>
+  <p style="margin-top:0.4rem;">
+    This lesson may be reused or adapted for educational purposes.
+    &nbsp;·&nbsp;
+    <a href="https://github.com/markalanjohnston/cmu-graphics-to-mobile-app" target="_blank">View on GitHub</a>
+    &nbsp;·&nbsp;
+    <a href="docs/">Full Lesson</a>
+  </p>
+</footer>
+
+</body>
+</html>
